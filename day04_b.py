@@ -51,6 +51,8 @@ def valField(field):
     return val in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']
   elif name == 'pid':
     return len(val) == 9 and re.search(r'[0-9]{9}', val)
+  elif name == 'cid':
+    return True
   else:
     return False
 
@@ -61,10 +63,12 @@ def valPP(pp):
       return False
   # check fields are valid
   fields = pp.split(' ')
+  print(fields)
   for f in fields:
     if not valField(f):
       return False
   # all fields valid so pp valid
+  print("valid")
   return True
 
 valid = 0
