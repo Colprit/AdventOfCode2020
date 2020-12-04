@@ -63,12 +63,10 @@ def valPP(pp):
       return False
   # check fields are valid
   fields = pp.split(' ')
-  print(fields)
   for f in fields:
     if not valField(f):
       return False
   # all fields valid so pp valid
-  print("valid")
   return True
 
 valid = 0
