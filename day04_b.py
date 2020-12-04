@@ -46,11 +46,11 @@ def valField(field):
   elif name == 'hgt':
     return valHgt(val)
   elif name == 'hcl':
-    return re.search(r'#[0-9a-f]{6}', val)
+    return len(val) == 7 and re.search(r'#[0-9a-f]{6}', val)
   elif name == 'ecl':
     return val in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']
   elif name == 'pid':
-    return re.search(r'[0-9]{9}', val)
+    return len(val) == 9 and re.search(r'[0-9]{9}', val)
   else:
     return False
 
