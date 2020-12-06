@@ -1,1 +1,1 @@
-import day05_b
+import day06_b
