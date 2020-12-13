@@ -22,6 +22,13 @@ ang_dic = {
   270: 'S'
 }
 
+def rot(x,y,ang):
+    N = int(((ang)%360)/90)
+    X,Y = x,y
+    for i in range(N):
+        X,Y = -Y, X
+    return X, Y
+
 for instr in instrs:
   i = instr[0]
   n = int(instr[1:])
@@ -32,13 +39,7 @@ for instr in instrs:
   elif i == 'L' or i == 'R':
     if i == 'R':
         n *= -1
-    dir = ((n)%360)/90
-    if dir == 1:
-        way_x, way_y = -way_y, way_x
-    elif dir == 2:
-        way_x, way_y = -way_x, -way_y
-    elif dir == 3:
-        way_x, way_y = way_y, -way_x
+    way_x, way_y = rot(way_x, way_y, n)
   else:
     mov = dir_dic[i]
     way_x += mov[0] * n
