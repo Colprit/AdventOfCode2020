@@ -10,10 +10,7 @@ for rule in rules_data.split('\n'):
     ranges = [[int(n) for n in r.split('-')] for r in ranges.split(' or ')]
     rules.update({ rule_name : ranges })
 
-valid_ranges = []
-for range_pair in rules.values():
-    for r in range_pair:
-        valid_ranges.append(r)
+valid_ranges = [r for ranges in rules.values() for r in ranges]
 
 nearby_tickets = [[int(field) for field in ticket.split(',')] for ticket in nearby_tickets]
 
