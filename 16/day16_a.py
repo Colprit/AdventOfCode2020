@@ -1,4 +1,4 @@
-with open('day16_inout.txt') as f:
+with open('day16_input.txt') as f:
     rules_data, your_ticket, nearby_tickets = f.read().split('\n\n')
 
 your_ticket = your_ticket.split('\n')[1:]
@@ -10,10 +10,7 @@ for rule in rules_data.split('\n'):
     ranges = [[int(n) for n in r.split('-')] for r in ranges.split(' or ')]
     rules.update({ rule_name : ranges })
 
-valid_ranges = []
-for range_pair in rules.values():
-    for r in range_pair:
-        valid_ranges.append(r)
+valid_ranges = [r for ranges in rules.values() for r in ranges]
 
 all_nearby_fields = [int(field) for ticket in nearby_tickets for field in ticket.split(',')]
 
@@ -27,7 +24,6 @@ for f in all_nearby_fields:
             valid = True
             break
     if not valid:
-        print(f)
         total += f
 
 print(total)
