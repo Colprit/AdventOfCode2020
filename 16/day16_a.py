@@ -1,4 +1,4 @@
-with open('day16_eg.txt') as f:
+with open('day16_inout.txt') as f:
     rules_data, your_ticket, nearby_tickets = f.read().split('\n\n')
 
 your_ticket = your_ticket.split('\n')[1:]
@@ -9,16 +9,6 @@ for rule in rules_data.split('\n'):
     rule_name, ranges = rule.split(': ')
     ranges = [[int(n) for n in r.split('-')] for r in ranges.split(' or ')]
     rules.update({ rule_name : ranges })
-
-def add_ranges(rangeA, rangeB):
-    xA, yA = rangeA
-    xB, yB = rangeB
-    if xA <= xB <= yA:
-        return [xA,max(yA,yB)]
-    elif xA <= yB <= yA:
-        return [min(xA,xB),yA]
-    else:
-        return rangeA, rangeB
 
 valid_ranges = []
 for range_pair in rules.values():

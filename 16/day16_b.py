@@ -4,8 +4,6 @@ with open('day16_input.txt') as f:
 your_ticket = [int(f) for f in your_ticket.split('\n')[1].split(',')]
 nearby_tickets = nearby_tickets.split('\n')[1:-1]
 
-print(your_ticket)
-
 rules = {}
 for rule in rules_data.split('\n'):
     rule_name, ranges = rule.split(': ')
@@ -36,12 +34,13 @@ for ticket in nearby_tickets:
     if valid_ticket:
         valid_tickets.append(ticket)
 
-field_dict = {}
+field_possible = {}
 
 remaining = set(range(len(rules)))
 
 for rule_name, rule in rules.items():
     r1, r2 = rule
+    possible = []
     for i in remaining:
         rule_broken = False
         for ticket in valid_tickets:
@@ -49,16 +48,24 @@ for rule_name, rule in rules.items():
                 rule_broken = True
                 break
         if not rule_broken:
-            break
-    field_dict.update({ rule_name : i })
-    remaining.remove(i)
+            possible.append(i)
+    field_possible.update({rule_name: set(possible)})
 
-print(field_dict)
+field_dict = {}
+
+while len(field_dict) < 20:
+    for field in field_possible:
+        field_possible[field] = field_possible[field].intersection(remaining)
+    
+    for field, possible in field_possible.items():
+        if len(possible) == 1:
+            must_be = list(possible)[0]
+            field_dict.update({ field : must_be })
+            remaining.remove(must_be)
 
 ans = 1
 for field, pos in field_dict.items():
     if 'departure' in field:
         ans *= your_ticket[pos]
-        print(your_ticket[pos])
 
 print(ans)
