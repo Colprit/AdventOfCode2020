@@ -14,7 +14,7 @@ for name in rules.keys():
         _rule = [[int(r) for r in part.split(' ')] for part in rule.split(' | ')]
     rules.update({name : _rule})
 
-evaluated = []
+evaluated = {name:False for name in rules.keys()}
 
 def eval_rule(name):
     global rules
@@ -26,7 +26,9 @@ def eval_rule(name):
         for part in rule:
             opts = ['']
             for r in part:
-                eval_rule(r)
+                if not evaluated[r]:
+                    eval_rule(r)
+                    evaluated[r] = True
                 opts = [opt+x for opt in opts for x in rules[r]]
                 opts = [opt for opt in opts if len(opt) <= MAX]
             all_opts += opts
