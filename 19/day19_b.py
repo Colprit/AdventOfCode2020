@@ -14,27 +14,31 @@ for name in rules.keys():
         _rule = [[int(r) for r in part.split(' ')] for part in rule.split(' | ')]
     rules.update({name : _rule})
 
-evaluated = {name:False for name in rules.keys()}
+evaluated = {name:isinstance(rule, str) for name, rule in rules.items()}
 
-def eval_rule(name):
+def eval_rule(name, K):
     global rules
-    rule = rules[name]
-    if all([isinstance(r, str) for r in rule]):
-        return
-    else:
+    print(K)
+    if K == 0:
+        return ['']
+    if not evaluated[name]:
+        rule = rules[name]
         all_opts = []
         for part in rule:
             opts = ['']
             for r in part:
-                if not evaluated[r]:
-                    eval_rule(r)
+                if evaluated[r]:
+                    X = rules[r]
+                else:
+                    X = eval_rule(r, K-1)
                     evaluated[r] = True
-                opts = [opt+x for opt in opts for x in rules[r]]
-                opts = [opt for opt in opts if len(opt) <= MAX]
+                opts = [opt+x for opt in opts for x in X if len(opt+x) <= MAX]
             all_opts += opts
         rules[name] = all_opts
+        # print(name, ':', all_opts)
+        return all_opts
 
-eval_rule(0)
+eval_rule(0,MAX)
 print('len', len(rule[0]))
 print('rule', rule[0])
 
