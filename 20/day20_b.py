@@ -134,8 +134,8 @@ while not fin_row:
     y += 1
 
 
-print('first row')
-print(picture)
+# print('first row')
+# print(picture)
 
 # determine left column
 x = 0
@@ -171,8 +171,8 @@ while not fin_col:
     
     x += 1
 
-print('first row and col')
-print(picture)
+# print('first row and col')
+# print(picture)
 
 # determine rest of picture
 x = 1
@@ -199,14 +199,60 @@ for x in range(1,len(picture)):
         picture[x].append(next)
         
 
-print('whole picture')
-print(picture)
+# print('whole picture')
+# print(picture)
 
 full_picture = [''.join([tiles[ref][0] for ref in row]) for i in range(1,9) for row in picture]
 
-for row in full_picture:
-    print(row)
+monster = [
+    '                  1 ',
+    '1    11    11    111',
+    ' 1  1  1  1  1  1   '
+]
+
+def find_monster(pic, x, y):
+    global full_picture, monster
+
+    xMon = len(monster)
+    yMon = len(monster[0])
+
+    sub_pic = [pic[x+i][y:y+yMon] for i in range(xMon)]
+
+    # print(monster)
+    # print(sub_pic)
+
+    found = True
+    for m in range(xMon):
+        for n in range(yMon):
+            if monster[m][n] == '1':
+                if sub_pic[m][n] == '0':
+                    found = False
     
+    # if found:
+    #     print(found)
+    #     for m in range(xMon):
+    #         for n in range(yMon):
+    #             if monster[m][n] == '1':
+    #                 full_picture[x+m][y+n] = 'O'
+    
+    return found
+
+full_picture = rot90(full_picture, 3)
+full_picture = flip(full_picture, 'x')
+
+total_monsters = 0
+for a in range(len(full_picture)-len(monster)):
+    for b in range(len(full_picture[0])-len(monster[0])):
+        total_monsters += find_monster(full_picture, a, b)
+
+total_hash = ''.join([row for row in full_picture]).count('1')
+
+print(total_hash-total_monsters*15)
+
+
+# for row in full_picture:
+#     print(row)
+
 # for b,t in borders_to_tiles.items():
 #     print(b,t)
 
