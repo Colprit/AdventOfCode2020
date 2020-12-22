@@ -202,13 +202,22 @@ for x in range(1,len(picture)):
 # print('whole picture')
 # print(picture)
 
-full_picture = [''.join([tiles[ref][0] for ref in row]) for i in range(1,9) for row in picture]
+# corner check
+# print('corners by edges:   ', list(corners.keys()))
+# print('corners on picture: ', picture[0][0], picture[0][-1], picture[-1][0], picture[-1][-1])
+
+
+full_picture = [''.join([tiles[ref][i][1:-1] for ref in row]) for i in range(1,9) for row in picture]
+
+for row in full_picture:
+    print(row)
 
 monster = [
     '                  1 ',
     '1    11    11    111',
     ' 1  1  1  1  1  1   '
 ]
+
 
 def find_monster(pic, x, y):
     global full_picture, monster
@@ -226,7 +235,7 @@ def find_monster(pic, x, y):
         for n in range(yMon):
             if monster[m][n] == '1':
                 if sub_pic[m][n] == '0':
-                    found = False
+                    return False
     
     # if found:
     #     print(found)
@@ -237,21 +246,36 @@ def find_monster(pic, x, y):
     
     return found
 
-full_picture = rot90(full_picture, 3)
-full_picture = flip(full_picture, 'x')
+# monster function check
+test_monster = ['000111'+row.replace(' ','0') for row in monster]
+print('Test monster:', test_monster)
+print('Test monster on monster: ')
+print(find_monster(test_monster, 0, 6))
 
-total_monsters = 0
-for a in range(len(full_picture)-len(monster)):
-    for b in range(len(full_picture[0])-len(monster[0])):
-        total_monsters += find_monster(full_picture, a, b)
+# full_picture = rot90(full_picture, 3)
+# full_picture = flip(full_picture, 'x')
 
-total_hash = ''.join([row for row in full_picture]).count('1')
+def monster_check(picture):
 
-print(total_hash-total_monsters*15)
+    total_monsters = 0
+    for a in range(len(picture)-len(monster)):
+        for b in range(len(picture[0])-len(monster[0])):
+            total_monsters += find_monster(picture, a, b)
 
+    total_hash = ''.join([row for row in picture]).count('1')
 
-# for row in full_picture:
-#     print(row)
+    print('total hashes: ', total_hash)
+    print('sea monsters: ', total_monsters)
+    print('answer:       ', total_hash-total_monsters*15)
+
+monster_check(rot90(full_picture, 0))
+monster_check(rot90(full_picture, 1))
+monster_check(rot90(full_picture, 2))
+monster_check(rot90(full_picture, 3))
+monster_check(flip(rot90(full_picture, 0),'x'))
+monster_check(flip(rot90(full_picture, 1),'x'))
+monster_check(flip(rot90(full_picture, 2),'x'))
+monster_check(flip(rot90(full_picture, 3),'x'))
 
 # for b,t in borders_to_tiles.items():
 #     print(b,t)
